@@ -13,7 +13,6 @@ namespace Aplication.Mappings
     {
         public MappingProfile()
         {
-            // Mapeo para registro: Estado inactivo y cargo invitado por defecto
             CreateMap<UsuarioRegistroDTO, Usuario>()
                 .ForMember(dest => dest.EstaActivo, opt => opt.MapFrom(src => false))
                 .ForMember(dest => dest.Cargo, opt => opt.MapFrom(src => "Invitado"))

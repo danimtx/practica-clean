@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "/pfTrwAps0M=",
+  "dgSpecHash": "lueRl1dCd6g=",
   "success": true,
-  "projectFilePath": "C:\\Users\\72873\\Desktop\\area3\\practica-clean-danimtx\\Aplication\\Aplication.csproj",
+  "projectFilePath": "C:\\Users\\72873\\Desktop\\area3\\practica-clean\\Aplication\\Aplication.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\72873\\.nuget\\packages\\automapper\\15.1.0\\automapper.15.1.0.nupkg.sha512",
     "C:\\Users\\72873\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",

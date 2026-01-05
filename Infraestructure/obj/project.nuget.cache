@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "h/vN1lIMl5w=",
+  "dgSpecHash": "71Soyiz+FLc=",
   "success": true,
-  "projectFilePath": "C:\\Users\\72873\\Desktop\\area3\\practica-clean-danimtx\\Infraestructure\\Infraestructure.csproj",
+  "projectFilePath": "C:\\Users\\72873\\Desktop\\area3\\practica-clean\\Infraestructure\\Infraestructure.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\72873\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\72873\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",

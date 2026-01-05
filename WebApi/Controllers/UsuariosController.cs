@@ -19,7 +19,6 @@ namespace WebApi.Controllers
             _repositorio = repositorio;
         }
 
-        // Endpoint de Auto-registro (Público)
         [HttpPost("registro")]
         public async Task<IActionResult> Registrar([FromBody] UsuarioRegistroDTO dto)
         {
@@ -27,7 +26,6 @@ namespace WebApi.Controllers
             return Ok(resultado);
         }
 
-        // Endpoint para que el Admin gestione (Cargo/Permisos)
         [HttpPut("gestionar")]
         public async Task<IActionResult> Gestionar([FromBody] UsuarioGestionDTO dto)
         {

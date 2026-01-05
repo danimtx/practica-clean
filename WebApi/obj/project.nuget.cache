@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "1KfsT/B7TsE=",
+  "dgSpecHash": "WKYlaEdaUa0=",
   "success": true,
-  "projectFilePath": "C:\\Users\\72873\\Desktop\\area3\\practica-clean-danimtx\\WebApi\\WebApi.csproj",
+  "projectFilePath": "C:\\Users\\72873\\Desktop\\area3\\practica-clean\\WebApi\\WebApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\72873\\.nuget\\packages\\automapper\\15.1.0\\automapper.15.1.0.nupkg.sha512",
     "C:\\Users\\72873\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",

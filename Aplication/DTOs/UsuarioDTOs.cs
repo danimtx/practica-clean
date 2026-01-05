@@ -13,7 +13,6 @@ namespace Aplication.DTOs
         public string Password { get; set; }
     }
 
-    // Para que el Admin gestione cargos y permisos
     public class UsuarioGestionDTO
     {
         public Guid Id { get; set; }

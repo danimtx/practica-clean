@@ -18,7 +18,6 @@ namespace Infraestructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            // Configuración para que los Permisos (List<string>) se guarden como texto simple
             modelBuilder.Entity<Usuario>()
                 .Property(u => u.Permisos)
                 .HasConversion(

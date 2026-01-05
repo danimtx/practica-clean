@@ -26,7 +26,6 @@ namespace Infraestructure.Repositorios
             return usuario;
         }
 
-        // Implementación para actualizar Cargo, Estado y Permisos (Usado por el Admin)
         public async Task ActualizarUsuarioAsync(Usuario usuario)
         {
             _context.Usuarios.Update(usuario);
