@@ -24,7 +24,7 @@ namespace Aplication.UseCases
         public async Task<Usuario> Ejecutar(UsuarioRegistroDTO dto)
         {
             var usuario = _mapper.Map<Usuario>(dto);
-            // Aquí iría la lógica para hashear la password antes de guardar
+            
             usuario.PasswordHash = dto.Password;
             return await _repositorio.CrearUsuarioAsync(usuario);
         }

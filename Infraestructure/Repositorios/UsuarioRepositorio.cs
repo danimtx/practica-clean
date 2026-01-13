@@ -37,14 +37,26 @@ namespace Infraestructure.Repositorios
             return await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == email);
         }
 
+        public async Task<Usuario?> ObtenerPorRefreshTokenAsync(string refreshToken)
+        {
+            return await _context.Usuarios.FirstOrDefaultAsync(u => u.RefreshToken == refreshToken);
+        }
+
         public async Task<Usuario?> ObtenerPorIdAsync(Guid id)
         {
             return await _context.Usuarios.FindAsync(id);
         }
 
-        public async Task<IEnumerable<Usuario>> ObtenerTodosAsync()
+        public async Task<IEnumerable<Usuario>> ObtenerTodosAsync(string? cargo = null)
         {
-            return await _context.Usuarios.ToListAsync();
+            var query = _context.Usuarios.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(cargo))
+            {
+                query = query.Where(u => u.Cargo == cargo);
+            }
+
+            return await query.ToListAsync();
         }
     }
 }

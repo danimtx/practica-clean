@@ -18,5 +18,8 @@ namespace Domain.Entities
         public bool EstaActivo { get; set; }
 
         public List<string> Permisos { get; set; } = new List<string>();
+
+        public string? RefreshToken { get; set; }
+        public DateTime? RefreshTokenExpiryTime { get; set; }
     }
 }

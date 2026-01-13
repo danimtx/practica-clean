@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+//mapping propile sirve para mapear los dtos con las entidades y viceversa
 namespace Aplication.Mappings
 {
     public class MappingProfile : Profile

@@ -13,6 +13,7 @@ namespace Domain.Interfaces
         Task ActualizarUsuarioAsync(Usuario usuario);
         Task<Usuario?> ObtenerPorIdAsync(Guid id);
         Task<Usuario?> ObtenerPorEmailAsync(string email);
-        Task<IEnumerable<Usuario>> ObtenerTodosAsync();
+        Task<Usuario?> ObtenerPorRefreshTokenAsync(string refreshToken);
+        Task<IEnumerable<Usuario>> ObtenerTodosAsync(string? cargo = null);
     }
 }

@@ -14,5 +14,8 @@ namespace Domain.Interfaces
         Task<IEnumerable<Inspeccion>> BuscarPorClienteAsync(string nombreCliente);
         Task<Inspeccion?> ObtenerPorIdAsync(Guid id);
         Task<IEnumerable<Inspeccion>> ObtenerTodasAsync();
+        Task ActualizarArchivoAsync(Guid id, string? ruta);
+        Task ActualizarEstadoAsync(Guid id, string nuevoEstado);
+        Task<IEnumerable<Inspeccion>> ObtenerPorTecnicoAsync(Guid tecnicoId);
     }
 }

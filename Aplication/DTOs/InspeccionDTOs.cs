@@ -21,5 +21,8 @@ namespace Aplication.DTOs
         public string DetallesTecnicos { get; set; }
         public string Estado { get; set; }
         public string NombreResponsable { get; set; } 
+        public string? RutaArchivoPdf { get; set; }
     }
+
+    public record InspeccionEstadoDTO(string NuevoEstado);
 }
