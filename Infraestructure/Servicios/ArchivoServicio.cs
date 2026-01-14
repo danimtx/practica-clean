@@ -41,7 +41,7 @@ namespace Infraestructure.Servicios
                 await stream.CopyToAsync(fileStream);
             }
 
-            return Path.Combine("uploads", subfolder, nombreArchivo).Replace('\\', '/');
+            return "/" + Path.Combine("uploads", subfolder, nombreArchivo).Replace('\\', '/');
         }
 
         public void EliminarArchivo(string? rutaRelativa)

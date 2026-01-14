@@ -1,13 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "GROotlFcFsA=",
+  "dgSpecHash": "Td37zeDdPdk=",
   "success": true,
   "projectFilePath": "C:\\Users\\72873\\Desktop\\area3\\practica-clean\\Domain\\Domain.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\72873\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",
-    "C:\\Users\\72873\\.nuget\\packages\\microsoft.netcore.app.ref\\9.0.11\\microsoft.netcore.app.ref.9.0.11.nupkg.sha512",
-    "C:\\Users\\72873\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\9.0.11\\microsoft.windowsdesktop.app.ref.9.0.11.nupkg.sha512",
-    "C:\\Users\\72873\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\9.0.11\\microsoft.aspnetcore.app.ref.9.0.11.nupkg.sha512"
+    "C:\\Users\\72873\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512"
   ],
   "logs": []
 }

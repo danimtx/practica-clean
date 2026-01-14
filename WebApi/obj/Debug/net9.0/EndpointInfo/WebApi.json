@@ -671,9 +671,9 @@
             "type": "string",
             "format": "uuid"
           },
-          "cargo": {
+          "cargoId": {
             "type": "string",
-            "nullable": true
+            "format": "uuid"
           },
           "estaActivo": {
             "type": "boolean"
@@ -701,6 +701,11 @@
           },
           "password": {
             "type": "string",
+            "nullable": true
+          },
+          "cargoId": {
+            "type": "string",
+            "format": "uuid",
             "nullable": true
           }
         },

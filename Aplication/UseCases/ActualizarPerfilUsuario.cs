@@ -1,4 +1,5 @@
 using Aplication.DTOs;
+using Domain.Entities;
 using Domain.Interfaces;
 using System;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace Aplication.UseCases
             _usuarioRepo = usuarioRepo;
         }
 
-        public async Task Ejecutar(Guid userId, PerfilEdicionDTO dto)
+        public async Task<Usuario> Ejecutar(Guid userId, PerfilEdicionDTO dto)
         {
             var usuario = await _usuarioRepo.ObtenerPorIdAsync(userId);
             if (usuario == null)
@@ -34,6 +35,8 @@ namespace Aplication.UseCases
             }
 
             await _usuarioRepo.ActualizarUsuarioAsync(usuario);
+
+            return usuario;
         }
     }
 }

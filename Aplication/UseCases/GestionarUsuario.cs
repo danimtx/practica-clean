@@ -58,7 +58,7 @@ namespace Aplication.UseCases
             }
 
             // Si pasa las validaciones, procedemos a actualizar
-            var nuevoCargo = await _cargoRepo.ObtenerPorNombreAsync(dto.Cargo);
+            var nuevoCargo = await _cargoRepo.ObtenerPorIdAsync(dto.CargoId);
             if (nuevoCargo == null)
             {
                 throw new ArgumentException("El cargo especificado no existe.");

@@ -11,12 +11,13 @@ namespace Aplication.DTOs
         public string Nombre { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
+        public Guid? CargoId { get; set; } // Opcional, para que el admin asigne un cargo
     }
 
     public class UsuarioGestionDTO
     {
         public Guid Id { get; set; }
-        public string Cargo { get; set; } = string.Empty;
+        public Guid CargoId { get; set; }
         public bool EstaActivo { get; set; }
         public List<string> Permisos { get; set; } = new List<string>();
     }
@@ -28,6 +29,7 @@ namespace Aplication.DTOs
         public string Email { get; set; } = string.Empty;
         public string Cargo { get; set; } = string.Empty;
         public string? FotoPerfil { get; set; }
+        public List<string> Permisos { get; set; } = new List<string>();
     }
 
     public class PerfilEdicionDTO

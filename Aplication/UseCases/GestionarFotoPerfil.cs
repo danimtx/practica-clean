@@ -1,3 +1,4 @@
+using Domain.Entities;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -20,7 +21,7 @@ namespace Aplication.UseCases
             _archivoServicio = archivoServicio;
         }
 
-        public async Task<string> Ejecutar(Guid userId, IFormFile archivo)
+        public async Task<Usuario> Ejecutar(Guid userId, IFormFile archivo)
         {
             if (archivo == null || archivo.Length == 0)
             {
@@ -54,7 +55,7 @@ namespace Aplication.UseCases
             usuario.FotoPerfil = rutaParaDb;
             await _usuarioRepo.ActualizarUsuarioAsync(usuario);
 
-            return rutaParaDb;
+            return usuario;
         }
     }
 }

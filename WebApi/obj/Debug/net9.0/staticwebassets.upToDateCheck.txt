@@ -1,0 +1,2 @@
+wwwroot\uploads\profiles\default.png
+wwwroot\uploads\profiles\f8a8b8e8-8e4f-4b8a-b8e8-f8a8b8e8f8a8.png

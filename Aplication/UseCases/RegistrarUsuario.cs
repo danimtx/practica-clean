@@ -26,19 +26,29 @@ namespace Aplication.UseCases
         public async Task<Usuario> Ejecutar(UsuarioRegistroDTO dto)
         {
             var usuario = _mapper.Map<Usuario>(dto);
-
-            var cargoInvitado = await _cargoRepositorio.ObtenerPorNombreAsync("Invitado");
-            if (cargoInvitado == null)
-            {
-                // En un caso real, podrías tener una lógica más robusta aquí.
-                throw new InvalidOperationException("El cargo 'Invitado' no se encontró en la base de datos.");
-            }
-
             usuario.PasswordHash = dto.Password; // TODO: Hash password
-            usuario.CargoId = cargoInvitado.Id;
-            usuario.EstaActivo = false;
-            usuario.Permisos = new List<string> { "home" };
             usuario.FotoPerfil = "/uploads/profiles/default.png";
+
+            if (dto.CargoId.HasValue)
+            {
+                // Creación por un admin
+                var cargo = await _cargoRepositorio.ObtenerPorIdAsync(dto.CargoId.Value);
+                if (cargo == null) throw new InvalidOperationException("El cargo especificado no existe.");
+                
+                usuario.CargoId = cargo.Id;
+                usuario.EstaActivo = true; // El admin crea usuarios activos por defecto
+                usuario.Permisos = new List<string>(); // El admin los gestionará después
+            }
+            else
+            {
+                // Registro público
+                var cargoInvitado = await _cargoRepositorio.ObtenerPorNombreAsync("Invitado");
+                if (cargoInvitado == null) throw new InvalidOperationException("El cargo 'Invitado' no se encontró.");
+
+                usuario.CargoId = cargoInvitado.Id;
+                usuario.EstaActivo = false;
+                usuario.Permisos = new List<string> { "home" };
+            }
 
             return await _repositorio.CrearUsuarioAsync(usuario);
         }

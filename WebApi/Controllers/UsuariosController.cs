@@ -77,8 +77,9 @@ namespace WebApi.Controllers
 
             try
             {
-                await _actualizarPerfilUseCase.Ejecutar(Guid.Parse(userId), dto);
-                return Ok("Perfil actualizado correctamente.");
+                var usuario = await _actualizarPerfilUseCase.Ejecutar(Guid.Parse(userId), dto);
+                var resultado = _mapper.Map<UsuarioDTO>(usuario);
+                return Ok(resultado);
             }
             catch (ArgumentException ex)
             {
@@ -116,7 +117,7 @@ namespace WebApi.Controllers
 
         [HttpPost("foto-perfil")]
         [Authorize]
-        public async Task<IActionResult> SubirFotoPerfil([FromForm] IFormFile archivo)
+        public async Task<IActionResult> SubirFotoPerfil([FromForm(Name = "file")] IFormFile archivo)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(userId))
@@ -126,8 +127,9 @@ namespace WebApi.Controllers
 
             try
             {
-                var ruta = await _gestionarFotoPerfilUseCase.Ejecutar(Guid.Parse(userId), archivo);
-                return Ok(new { rutaFoto = ruta });
+                var usuario = await _gestionarFotoPerfilUseCase.Ejecutar(Guid.Parse(userId), archivo);
+                var resultado = _mapper.Map<UsuarioDTO>(usuario);
+                return Ok(resultado);
             }
             catch (ArgumentException ex)
             {
