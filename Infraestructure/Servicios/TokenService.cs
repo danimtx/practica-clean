@@ -31,7 +31,7 @@ namespace Infraestructure.Servicios
                 new(JwtRegisteredClaimNames.Sub, usuario.Id.ToString()),
                 new(JwtRegisteredClaimNames.Email, usuario.Email),
                 new(JwtRegisteredClaimNames.Name, usuario.Nombre),
-                new("cargo", usuario.Cargo),
+                new("cargo", usuario.Cargo?.Nombre ?? "Invitado"),
                 new("permisos", string.Join(",", usuario.Permisos)) // Convertir lista a string
             };
 

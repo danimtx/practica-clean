@@ -22,6 +22,44 @@ namespace Infraestructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Domain.Entities.Cargo", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Cargos");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("a7e1b52c-1a9d-4da0-9a25-7b3b4f5a7a53"),
+                            Nombre = "SuperAdmin"
+                        },
+                        new
+                        {
+                            Id = new Guid("b8f2c9e8-4a1e-4f7b-9c6d-2e3a4b5c6d7e"),
+                            Nombre = "Admin"
+                        },
+                        new
+                        {
+                            Id = new Guid("c9d3e7f6-5b2d-4e8a-9a4c-3f2b1a0c9d8f"),
+                            Nombre = "Tecnico"
+                        },
+                        new
+                        {
+                            Id = new Guid("d0e4f8a5-6c3e-4d9b-8b1d-4a0c9d8f7e6a"),
+                            Nombre = "Invitado"
+                        });
+                });
+
             modelBuilder.Entity("Domain.Entities.Inspeccion", b =>
                 {
                     b.Property<Guid>("Id")
@@ -64,15 +102,40 @@ namespace Infraestructure.Migrations
                     b.ToTable("Inspecciones");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Notificacion", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Leido")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Mensaje")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UsuarioId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("Notificaciones");
+                });
+
             modelBuilder.Entity("Domain.Entities.Usuario", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Cargo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("CargoId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -80,6 +143,9 @@ namespace Infraestructure.Migrations
 
                     b.Property<bool>("EstaActivo")
                         .HasColumnType("bit");
+
+                    b.Property<string>("FotoPerfil")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -101,7 +167,22 @@ namespace Infraestructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CargoId");
+
                     b.ToTable("Usuarios");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("f8a8b8e8-8e4f-4b8a-b8e8-f8a8b8e8f8a8"),
+                            CargoId = new Guid("a7e1b52c-1a9d-4da0-9a25-7b3b4f5a7a53"),
+                            Email = "superadmin@cybercorp.com",
+                            EstaActivo = true,
+                            FotoPerfil = "/uploads/profiles/default.png",
+                            Nombre = "SuperAdmin",
+                            PasswordHash = "superadmin123",
+                            Permisos = "inspeccion:crear,inspeccion:editar,inspeccion:estado,inspeccion:archivo:subir,inspeccion:archivo:borrar,usuario:gestionar,cargo:gestionar"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Inspeccion", b =>
@@ -111,6 +192,33 @@ namespace Infraestructure.Migrations
                         .HasForeignKey("UsuarioId");
 
                     b.Navigation("Tecnico");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Notificacion", b =>
+                {
+                    b.HasOne("Domain.Entities.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Usuario", b =>
+                {
+                    b.HasOne("Domain.Entities.Cargo", "Cargo")
+                        .WithMany("Usuarios")
+                        .HasForeignKey("CargoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cargo");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Cargo", b =>
+                {
+                    b.Navigation("Usuarios");
                 });
 #pragma warning restore 612, 618
         }

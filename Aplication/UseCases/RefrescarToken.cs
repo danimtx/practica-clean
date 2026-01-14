@@ -35,7 +35,7 @@ namespace Aplication.UseCases
             return new AuthResponseDTO(
                 newAccessToken,
                 newRefreshToken,
-                user.Cargo,
+                user.Cargo?.Nombre ?? "Invitado",
                 user.Permisos
             );
         }

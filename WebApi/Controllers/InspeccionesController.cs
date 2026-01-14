@@ -32,10 +32,16 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = "inspeccion:crear")]
         public async Task<IActionResult> Crear([FromBody] CrearInspeccionDTO dto)
         {
-            var resultado = await _crearUseCase.Ejecutar(dto);
+            var adminName = User.FindFirstValue(ClaimTypes.Name);
+            if (string.IsNullOrEmpty(adminName))
+            {
+                return Unauthorized("No se pudo identificar el nombre del administrador desde el token.");
+            }
+
+            var resultado = await _crearUseCase.Ejecutar(dto, adminName);
             return Ok(resultado);
         }
 
@@ -61,7 +67,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("{id}/archivo")]
-        [Authorize(Roles = "Tecnico")]
+        [Authorize(Policy = "inspeccion:archivo:subir")]
         public async Task<IActionResult> SubirArchivo(Guid id, [FromForm] IFormFile archivo)
         {
             // TODO: Validar que el técnico solo pueda subir archivos a SUS inspecciones.
@@ -70,7 +76,7 @@ namespace WebApi.Controllers
         }
 
         [HttpDelete("{id}/archivo")]
-        [Authorize(Roles = "Admin,Tecnico")]
+        [Authorize(Policy = "inspeccion:archivo:borrar")]
         public async Task<IActionResult> EliminarArchivo(Guid id)
         {
             await _archivoUseCase.EliminarArchivo(id);
@@ -96,7 +102,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPatch("{id}/estado")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = "inspeccion:estado")]
         public async Task<IActionResult> ActualizarEstado(Guid id, [FromBody] InspeccionEstadoDTO dto)
         {
             await _repositorio.ActualizarEstadoAsync(id, dto.NuevoEstado);

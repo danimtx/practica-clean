@@ -8,19 +8,19 @@ namespace Aplication.DTOs
 {
     public class CrearInspeccionDTO
     {
-        public string NombreCliente { get; set; }
-        public string Direccion { get; set; }
-        public string DetallesTecnicos { get; set; }
-        public string Observaciones { get; set; }
+        public string NombreCliente { get; set; } = string.Empty;
+        public string Direccion { get; set; } = string.Empty;
+        public string DetallesTecnicos { get; set; } = string.Empty;
+        public string Observaciones { get; set; } = string.Empty;
         public Guid? UsuarioId { get; set; }
     }
     public class InspeccionDetalleDTO
     {
         public Guid Id { get; set; }
-        public string NombreCliente { get; set; }
-        public string DetallesTecnicos { get; set; }
-        public string Estado { get; set; }
-        public string NombreResponsable { get; set; } 
+        public string NombreCliente { get; set; } = string.Empty;
+        public string DetallesTecnicos { get; set; } = string.Empty;
+        public string Estado { get; set; } = string.Empty;
+        public string NombreResponsable { get; set; } = string.Empty;
         public string? RutaArchivoPdf { get; set; }
     }
 

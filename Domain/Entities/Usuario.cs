@@ -14,12 +14,14 @@ namespace Domain.Entities
 
         public string PasswordHash { get; set; }
 
-        public string Cargo { get; set; } // "Admin", "Técnico", "Pasante", "Invitado"
+        public Guid CargoId { get; set; }
+        public Cargo Cargo { get; set; }    
         public bool EstaActivo { get; set; }
 
         public List<string> Permisos { get; set; } = new List<string>();
 
         public string? RefreshToken { get; set; }
         public DateTime? RefreshTokenExpiryTime { get; set; }
+        public string? FotoPerfil { get; set; }
     }
 }

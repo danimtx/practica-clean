@@ -9,15 +9,13 @@ namespace Aplication.UseCases
     public class GestionarArchivoInspeccion
     {
         private readonly IInspeccionRepositorio _repositorio;
-        private readonly string _basePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "inspecciones");
+        private readonly IArchivoServicio _archivoServicio;
+        private const long MaxFileSize = 5 * 1024 * 1024; // 5MB
 
-        public GestionarArchivoInspeccion(IInspeccionRepositorio repositorio)
+        public GestionarArchivoInspeccion(IInspeccionRepositorio repositorio, IArchivoServicio archivoServicio)
         {
             _repositorio = repositorio;
-            if (!Directory.Exists(_basePath))
-            {
-                Directory.CreateDirectory(_basePath);
-            }
+            _archivoServicio = archivoServicio;
         }
 
         public async Task<string> SubirArchivo(Guid inspeccionId, IFormFile archivo)
@@ -27,9 +25,14 @@ namespace Aplication.UseCases
                 throw new ArgumentException("El archivo no puede estar vacío.");
             }
 
-            if (Path.GetExtension(archivo.FileName).ToLowerInvariant() != ".pdf")
+            if (archivo.ContentType != "application/pdf")
             {
-                throw new ArgumentException("Solo se permiten archivos PDF.");
+                throw new ArgumentException("Solo se permiten archivos con formato PDF.");
+            }
+
+            if (archivo.Length > MaxFileSize)
+            {
+                throw new ArgumentException($"El tamaño del archivo no puede exceder los {MaxFileSize / 1024 / 1024}MB.");
             }
 
             var inspeccion = await _repositorio.ObtenerPorIdAsync(inspeccionId);
@@ -38,25 +41,10 @@ namespace Aplication.UseCases
                 throw new ArgumentException("Inspección no encontrada.");
             }
 
-            // Si ya existe un archivo, lo borramos primero.
-            if (!string.IsNullOrEmpty(inspeccion.RutaArchivoPdf))
-            {
-                var rutaAntigua = Path.Combine(_basePath, Path.GetFileName(inspeccion.RutaArchivoPdf));
-                if (File.Exists(rutaAntigua))
-                {
-                    File.Delete(rutaAntigua);
-                }
-            }
-
             var nombreArchivo = $"{inspeccionId}.pdf";
-            var rutaCompleta = Path.Combine(_basePath, nombreArchivo);
+            using var stream = archivo.OpenReadStream();
+            var rutaParaDb = await _archivoServicio.GuardarArchivoAsync(stream, nombreArchivo, archivo.ContentType, "inspecciones");
 
-            using (var stream = new FileStream(rutaCompleta, FileMode.Create))
-            {
-                await archivo.CopyToAsync(stream);
-            }
-
-            var rutaParaDb = $"/uploads/inspecciones/{nombreArchivo}";
             await _repositorio.ActualizarArchivoAsync(inspeccionId, rutaParaDb);
 
             return rutaParaDb;
@@ -65,18 +53,12 @@ namespace Aplication.UseCases
         public async Task EliminarArchivo(Guid inspeccionId)
         {
             var inspeccion = await _repositorio.ObtenerPorIdAsync(inspeccionId);
-            if (inspeccion == null || string.IsNullOrEmpty(inspeccion.RutaArchivoPdf))
+            if (inspeccion == null)
             {
-                return;
+                 throw new ArgumentException("Inspección no encontrada.");
             }
-
-            var nombreArchivo = Path.GetFileName(inspeccion.RutaArchivoPdf);
-            var rutaCompleta = Path.Combine(_basePath, nombreArchivo);
-
-            if (File.Exists(rutaCompleta))
-            {
-                File.Delete(rutaCompleta);
-            }
+            
+            _archivoServicio.EliminarArchivo(inspeccion.RutaArchivoPdf);
 
             await _repositorio.ActualizarArchivoAsync(inspeccionId, null);
         }

@@ -1,5 +1,6 @@
 C:\Users\72873\Desktop\area3\practica-clean\WebApi\bin\Debug\net9.0\appsettings.Development.json
 C:\Users\72873\Desktop\area3\practica-clean\WebApi\bin\Debug\net9.0\appsettings.json
+C:\Users\72873\Desktop\area3\practica-clean\WebApi\bin\Debug\net9.0\WebApi.staticwebassets.runtime.json
 C:\Users\72873\Desktop\area3\practica-clean\WebApi\bin\Debug\net9.0\WebApi.staticwebassets.endpoints.json
 C:\Users\72873\Desktop\area3\practica-clean\WebApi\bin\Debug\net9.0\WebApi.exe
 C:\Users\72873\Desktop\area3\practica-clean\WebApi\bin\Debug\net9.0\WebApi.deps.json
@@ -10,6 +11,8 @@ C:\Users\72873\Desktop\area3\practica-clean\WebApi\bin\Debug\net9.0\AutoMapper.d
 C:\Users\72873\Desktop\area3\practica-clean\WebApi\bin\Debug\net9.0\Azure.Core.dll
 C:\Users\72873\Desktop\area3\practica-clean\WebApi\bin\Debug\net9.0\Azure.Identity.dll
 C:\Users\72873\Desktop\area3\practica-clean\WebApi\bin\Debug\net9.0\Humanizer.dll
+C:\Users\72873\Desktop\area3\practica-clean\WebApi\bin\Debug\net9.0\MediatR.dll
+C:\Users\72873\Desktop\area3\practica-clean\WebApi\bin\Debug\net9.0\MediatR.Contracts.dll
 C:\Users\72873\Desktop\area3\practica-clean\WebApi\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\72873\Desktop\area3\practica-clean\WebApi\bin\Debug\net9.0\Microsoft.AspNetCore.OpenApi.dll
 C:\Users\72873\Desktop\area3\practica-clean\WebApi\bin\Debug\net9.0\Microsoft.Bcl.AsyncInterfaces.dll
@@ -26,7 +29,9 @@ C:\Users\72873\Desktop\area3\practica-clean\WebApi\bin\Debug\net9.0\Microsoft.En
 C:\Users\72873\Desktop\area3\practica-clean\WebApi\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.Design.dll
 C:\Users\72873\Desktop\area3\practica-clean\WebApi\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.Relational.dll
 C:\Users\72873\Desktop\area3\practica-clean\WebApi\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+C:\Users\72873\Desktop\area3\practica-clean\WebApi\bin\Debug\net9.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 C:\Users\72873\Desktop\area3\practica-clean\WebApi\bin\Debug\net9.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\72873\Desktop\area3\practica-clean\WebApi\bin\Debug\net9.0\Microsoft.Extensions.Logging.Abstractions.dll
 C:\Users\72873\Desktop\area3\practica-clean\WebApi\bin\Debug\net9.0\Microsoft.Identity.Client.dll
 C:\Users\72873\Desktop\area3\practica-clean\WebApi\bin\Debug\net9.0\Microsoft.Identity.Client.Extensions.Msal.dll
 C:\Users\72873\Desktop\area3\practica-clean\WebApi\bin\Debug\net9.0\Microsoft.IdentityModel.Abstractions.dll
@@ -50,6 +55,7 @@ C:\Users\72873\Desktop\area3\practica-clean\WebApi\bin\Debug\net9.0\System.Compo
 C:\Users\72873\Desktop\area3\practica-clean\WebApi\bin\Debug\net9.0\System.Composition.Runtime.dll
 C:\Users\72873\Desktop\area3\practica-clean\WebApi\bin\Debug\net9.0\System.Composition.TypedParts.dll
 C:\Users\72873\Desktop\area3\practica-clean\WebApi\bin\Debug\net9.0\System.Configuration.ConfigurationManager.dll
+C:\Users\72873\Desktop\area3\practica-clean\WebApi\bin\Debug\net9.0\System.Diagnostics.DiagnosticSource.dll
 C:\Users\72873\Desktop\area3\practica-clean\WebApi\bin\Debug\net9.0\System.Drawing.Common.dll
 C:\Users\72873\Desktop\area3\practica-clean\WebApi\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll
 C:\Users\72873\Desktop\area3\practica-clean\WebApi\bin\Debug\net9.0\System.Memory.Data.dll

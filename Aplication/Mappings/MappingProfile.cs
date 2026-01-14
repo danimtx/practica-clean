@@ -14,10 +14,10 @@ namespace Aplication.Mappings
     {
         public MappingProfile()
         {
-            CreateMap<UsuarioRegistroDTO, Usuario>()
-                .ForMember(dest => dest.EstaActivo, opt => opt.MapFrom(src => false))
-                .ForMember(dest => dest.Cargo, opt => opt.MapFrom(src => "Invitado"))
-                .ForMember(dest => dest.Permisos, opt => opt.MapFrom(src => new List<string> { "home" }));
+            CreateMap<UsuarioRegistroDTO, Usuario>();
+
+            CreateMap<Usuario, UsuarioDTO>()
+                .ForMember(dest => dest.Cargo, opt => opt.MapFrom(src => src.Cargo.Nombre));
 
             CreateMap<CrearInspeccionDTO, Inspeccion>()
                 .ForMember(dest => dest.Estado, opt => opt.MapFrom(src => "Pendiente"));

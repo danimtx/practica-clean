@@ -30,7 +30,7 @@ namespace Aplication.UseCases
             return new AuthResponseDTO(
                 _tokenService.GenerarAccessToken(usuario),
                 refreshToken,
-                usuario.Cargo,
+                usuario.Cargo?.Nombre ?? "Invitado",
                 usuario.Permisos
             );
         }

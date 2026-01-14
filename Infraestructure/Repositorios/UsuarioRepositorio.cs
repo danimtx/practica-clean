@@ -34,26 +34,32 @@ namespace Infraestructure.Repositorios
 
         public async Task<Usuario?> ObtenerPorEmailAsync(string email)
         {
-            return await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == email);
+            return await _context.Usuarios
+                .Include(u => u.Cargo)
+                .FirstOrDefaultAsync(u => u.Email == email);
         }
 
         public async Task<Usuario?> ObtenerPorRefreshTokenAsync(string refreshToken)
         {
-            return await _context.Usuarios.FirstOrDefaultAsync(u => u.RefreshToken == refreshToken);
+            return await _context.Usuarios
+                .Include(u => u.Cargo)
+                .FirstOrDefaultAsync(u => u.RefreshToken == refreshToken);
         }
 
         public async Task<Usuario?> ObtenerPorIdAsync(Guid id)
         {
-            return await _context.Usuarios.FindAsync(id);
+            return await _context.Usuarios
+                .Include(u => u.Cargo)
+                .FirstOrDefaultAsync(u => u.Id == id);
         }
 
         public async Task<IEnumerable<Usuario>> ObtenerTodosAsync(string? cargo = null)
         {
-            var query = _context.Usuarios.AsQueryable();
+            var query = _context.Usuarios.Include(u => u.Cargo).AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(cargo))
             {
-                query = query.Where(u => u.Cargo == cargo);
+                query = query.Where(u => u.Cargo.Nombre == cargo);
             }
 
             return await query.ToListAsync();

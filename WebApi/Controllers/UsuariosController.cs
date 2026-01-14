@@ -1,9 +1,11 @@
 ﻿using Aplication.DTOs;
 using Aplication.UseCases;
+using AutoMapper;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace WebApi.Controllers
 {
@@ -15,17 +17,73 @@ namespace WebApi.Controllers
         private readonly LoginUsuario _loginUseCase;
         private readonly RefrescarToken _refrescarTokenUseCase;
         private readonly IUsuarioRepositorio _repositorio;
+        private readonly ICargoRepositorio _cargoRepositorio;
+        private readonly GestionarFotoPerfil _gestionarFotoPerfilUseCase;
+        private readonly ActualizarPerfilUsuario _actualizarPerfilUseCase;
+        private readonly GestionarUsuario _gestionarUsuarioUseCase;
+        private readonly IMapper _mapper;
 
         public UsuariosController(
             RegistrarUsuario registrarUseCase,
             LoginUsuario loginUseCase,
             RefrescarToken refrescarTokenUseCase,
-            IUsuarioRepositorio repositorio)
+            IUsuarioRepositorio repositorio,
+            ICargoRepositorio cargoRepositorio,
+            GestionarFotoPerfil gestionarFotoPerfilUseCase,
+            ActualizarPerfilUsuario actualizarPerfilUseCase,
+            GestionarUsuario gestionarUsuarioUseCase,
+            IMapper mapper)
         {
             _registrarUseCase = registrarUseCase;
             _loginUseCase = loginUseCase;
             _refrescarTokenUseCase = refrescarTokenUseCase;
             _repositorio = repositorio;
+            _cargoRepositorio = cargoRepositorio;
+            _gestionarFotoPerfilUseCase = gestionarFotoPerfilUseCase;
+            _actualizarPerfilUseCase = actualizarPerfilUseCase;
+            _gestionarUsuarioUseCase = gestionarUsuarioUseCase;
+            _mapper = mapper;
+        }
+
+        [HttpGet("perfil")]
+        [Authorize]
+        public async Task<IActionResult> GetPerfil()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            var usuario = await _repositorio.ObtenerPorIdAsync(Guid.Parse(userId));
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+
+            var resultado = _mapper.Map<UsuarioDTO>(usuario);
+            return Ok(resultado);
+        }
+
+        [HttpPut("perfil")]
+        [Authorize]
+        public async Task<IActionResult> UpdatePerfil([FromBody] PerfilEdicionDTO dto)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            try
+            {
+                await _actualizarPerfilUseCase.Ejecutar(Guid.Parse(userId), dto);
+                return Ok("Perfil actualizado correctamente.");
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost("login")]
@@ -51,29 +109,58 @@ namespace WebApi.Controllers
         [HttpPost("registro")]
         public async Task<IActionResult> Registrar([FromBody] UsuarioRegistroDTO dto)
         {
-            var resultado = await _registrarUseCase.Ejecutar(dto);
+            var usuario = await _registrarUseCase.Ejecutar(dto);
+            var resultado = _mapper.Map<UsuarioDTO>(usuario);
             return Ok(resultado);
         }
 
+        [HttpPost("foto-perfil")]
+        [Authorize]
+        public async Task<IActionResult> SubirFotoPerfil([FromForm] IFormFile archivo)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            try
+            {
+                var ruta = await _gestionarFotoPerfilUseCase.Ejecutar(Guid.Parse(userId), archivo);
+                return Ok(new { rutaFoto = ruta });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPut("gestionar")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = "usuario:gestionar")]
         public async Task<IActionResult> Gestionar([FromBody] UsuarioGestionDTO dto)
         {
-            var usuario = await _repositorio.ObtenerPorIdAsync(dto.Id);
-            if (usuario == null) return NotFound("Usuario no encontrado");
-
-            usuario.Cargo = dto.Cargo;
-            usuario.EstaActivo = dto.EstaActivo;
-            usuario.Permisos = dto.Permisos;
-
-            await _repositorio.ActualizarUsuarioAsync(usuario);
-            return Ok("Usuario actualizado correctamente");
+            try
+            {
+                await _gestionarUsuarioUseCase.Ejecutar(dto, User);
+                return Ok("Usuario actualizado correctamente.");
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Forbid(ex.Message);
+            }
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> ListarTodos([FromQuery] string? cargo = null)
         {
-            return Ok(await _repositorio.ObtenerTodosAsync(cargo));
+            var usuarios = await _repositorio.ObtenerTodosAsync(cargo);
+            var resultado = _mapper.Map<IEnumerable<UsuarioDTO>>(usuarios);
+            return Ok(resultado);
         }
     }
 }
