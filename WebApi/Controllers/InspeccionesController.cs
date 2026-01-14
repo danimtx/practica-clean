@@ -46,7 +46,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("buscar")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         public async Task<IActionResult> BuscarPorCliente([FromQuery] string nombre)
         {
             var inspecciones = await _repositorio.BuscarPorClienteAsync(nombre);
@@ -101,6 +101,16 @@ namespace WebApi.Controllers
             return PhysicalFile(path, "application/pdf", Path.GetFileName(path));
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> ObtenerPorId(Guid id)
+        {
+            var inspeccion = await _repositorio.ObtenerPorIdAsync(id);
+            if (inspeccion == null) return NotFound();
+
+            var resultado = _mapper.Map<InspeccionDetalleDTO>(inspeccion);
+            return Ok(resultado);
+        }
+
         [HttpPatch("{id}/estado")]
         [Authorize(Policy = "inspeccion:estado")]
         public async Task<IActionResult> ActualizarEstado(Guid id, [FromBody] InspeccionEstadoDTO dto)
@@ -108,5 +118,15 @@ namespace WebApi.Controllers
             await _repositorio.ActualizarEstadoAsync(id, dto.NuevoEstado);
             return Ok("Estado actualizado");
         }
+
+        [HttpGet] // Nueva ruta para obtener todas las inspecciones
+        [Authorize(Roles = "Admin,SuperAdmin")] // Asumiendo que solo los admins pueden ver todas las inspecciones
+        public async Task<IActionResult> ObtenerTodas()
+        {
+            var inspecciones = await _repositorio.ObtenerTodasAsync();
+            var resultado = _mapper.Map<IEnumerable<InspeccionDetalleDTO>>(inspecciones);
+            return Ok(resultado);
+        }
+
     }
 }

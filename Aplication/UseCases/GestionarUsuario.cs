@@ -18,7 +18,7 @@ namespace Aplication.UseCases
             _cargoRepo = cargoRepo;
         }
 
-        public async Task Ejecutar(UsuarioGestionDTO dto, ClaimsPrincipal user)
+        public async Task<Usuario> Ejecutar(UsuarioGestionDTO dto, ClaimsPrincipal user)
         {
             var adminIdString = user.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(adminIdString) || !Guid.TryParse(adminIdString, out var adminId))
@@ -65,10 +65,13 @@ namespace Aplication.UseCases
             }
 
             usuarioAModificar.CargoId = nuevoCargo.Id;
+            usuarioAModificar.Cargo = nuevoCargo; // Asegurar que el objeto Cargo se actualice para el mapping
             usuarioAModificar.EstaActivo = dto.EstaActivo;
             usuarioAModificar.Permisos = dto.Permisos;
 
             await _usuarioRepo.ActualizarUsuarioAsync(usuarioAModificar);
+
+            return usuarioAModificar;
         }
     }
 }

@@ -28,6 +28,7 @@ namespace Aplication.DTOs
         public string Nombre { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string Cargo { get; set; } = string.Empty;
+        public bool EstaActivo { get; set; } // Añadir esta propiedad
         public string? FotoPerfil { get; set; }
         public List<string> Permisos { get; set; } = new List<string>();
     }

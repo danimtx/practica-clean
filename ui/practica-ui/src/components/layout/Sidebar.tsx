@@ -12,7 +12,7 @@ type NavLinkDef = {
 const navLinks: NavLinkDef[] = [
   { to: '/', label: 'Dashboard' },
   { to: '/inspecciones', label: 'Ver Inspecciones', requiredPermission: 'usuario:gestionar' }, // Vista de Admin
-  { to: '/mis-inspecciones', label: 'Mis Inspecciones', requiredCargo: 'Técnico' },
+  { to: '/mis-inspecciones', label: 'Mis Inspecciones' },
   { to: '/inspecciones/crear', label: 'Crear Inspección', requiredPermission: 'inspeccion:crear' },
   { to: '/gestion-usuarios', label: 'Gestión de Usuarios', requiredPermission: 'usuario:gestionar' },
   { to: '/gestion-cargos', label: 'Gestión de Cargos', requiredPermission: 'cargo:gestionar' },

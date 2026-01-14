@@ -30,9 +30,10 @@ namespace Infraestructure.Servicios
             {
                 new(JwtRegisteredClaimNames.Sub, usuario.Id.ToString()),
                 new(JwtRegisteredClaimNames.Email, usuario.Email),
-                new(JwtRegisteredClaimNames.Name, usuario.Nombre),
+                new(ClaimTypes.Name, usuario.Nombre),
+                new(ClaimTypes.Role, usuario.Cargo?.Nombre ?? "Invitado"),
                 new("cargo", usuario.Cargo?.Nombre ?? "Invitado"),
-                new("permisos", string.Join(",", usuario.Permisos)) // Convertir lista a string
+                new("permisos", string.Join(",", usuario.Permisos))
             };
 
             var token = new JwtSecurityToken(

@@ -8,7 +8,7 @@ namespace WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Policy = "SuperAdminPolicy")]
+    [Authorize]
     public class CargosController : ControllerBase
     {
         private readonly ICargoRepositorio _cargoRepositorio;
@@ -26,6 +26,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "SuperAdminPolicy")]
         [Authorize(Policy = "cargo:gestionar")]
         public async Task<IActionResult> Create([FromBody] CargoDTO dto)
         {
@@ -35,6 +36,7 @@ namespace WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "SuperAdminPolicy")]
         [Authorize(Policy = "cargo:gestionar")]
         public async Task<IActionResult> Delete(Guid id)
         {

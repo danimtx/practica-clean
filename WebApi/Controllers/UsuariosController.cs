@@ -143,8 +143,9 @@ namespace WebApi.Controllers
         {
             try
             {
-                await _gestionarUsuarioUseCase.Ejecutar(dto, User);
-                return Ok("Usuario actualizado correctamente.");
+                var usuario = await _gestionarUsuarioUseCase.Ejecutar(dto, User);
+                var resultado = _mapper.Map<UsuarioDTO>(usuario);
+                return Ok(resultado);
             }
             catch (ArgumentException ex)
             {

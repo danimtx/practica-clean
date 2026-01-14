@@ -28,20 +28,25 @@ const CrearInspeccionPage: React.FC = () => {
   }, [canCreate]);
 
   useEffect(() => {
-    if (selectedCargo) {
-      getUsers(selectedCargo)
-        .then(setUsers)
-        .catch(() => toast.error(`No se pudieron cargar los usuarios con el cargo ${selectedCargo}.`));
-    } else {
-      setUsers([]);
-    }
-  }, [selectedCargo]);
+    if (!canCreate) return;
+    
+    // Cargamos usuarios inicialmente (sin filtro) o cuando cambia el filtro
+    getUsers(selectedCargo || undefined)
+      .then(setUsers)
+      .catch(() => toast.error(`No se pudieron cargar los usuarios.`));
+  }, [selectedCargo, canCreate]);
 
   const onSubmit = async (data: CreateInspeccionPayload) => {
     setIsLoading(true);
     toast.info('Creando inspección...');
     try {
-      await createInspeccion(data);
+      // Aseguramos que los campos opcionales no sean undefined
+      const payload = {
+        ...data,
+        detallesTecnicos: data.detallesTecnicos || '',
+        observaciones: data.observaciones || ''
+      };
+      await createInspeccion(payload);
       toast.success('Inspección creada y asignada correctamente.');
       navigate('/inspecciones');
     } catch (error) {

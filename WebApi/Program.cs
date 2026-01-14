@@ -12,6 +12,7 @@ using WebApi.Services;
 using WebApi.Hubs;
 using Microsoft.AspNetCore.SignalR;
 using Aplication.Interfaces;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -86,17 +87,31 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-// Configuración de Autorización y Políticas
+// WebApi/Program.cs
+
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("SuperAdminPolicy", policy => policy.RequireClaim("cargo", "SuperAdmin"));
+    // Política para SuperAdmin
+    options.AddPolicy("SuperAdminPolicy", policy => policy.RequireRole("SuperAdmin"));
 
-    var permissions = new[] { "inspeccion:crear", "inspeccion:editar", "inspeccion:estado", "inspeccion:archivo:subir", "inspeccion:archivo:borrar", "usuario:gestionar", "cargo:gestionar" };
+    // Lista de permisos exactos que usa el sistema
+    var permissions = new[] {
+        "inspeccion:crear",
+        "inspeccion:editar",
+        "inspeccion:estado",
+        "inspeccion:archivo:subir",
+        "inspeccion:archivo:borrar",
+        "usuario:gestionar",
+        "cargo:gestionar"
+    };
+
     foreach (var permission in permissions)
     {
-        options.AddPolicy(permission, policy => policy.RequireAssertion(context =>
-            context.User.HasClaim(c => c.Type == "permisos" && c.Value.Split(',').Contains(permission))
-        ));
+        options.AddPolicy(permission, policy =>
+            policy.RequireAssertion(context =>
+                // CORRECCIÓN: Buscamos "permiso" (singular) y valor exacto
+                context.User.HasClaim(c => c.Type == "permiso" && c.Value == permission)
+            ));
     }
 });
 
@@ -125,5 +140,12 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.MapHub<WebApi.Hubs.NotificationHub>("/notificationHub");
+
+var uploadPath = Path.Combine(builder.Environment.WebRootPath, "uploads");
+var profilesPath = Path.Combine(uploadPath, "profiles");
+var inspeccionesPath = Path.Combine(uploadPath, "inspecciones");
+
+if (!Directory.Exists(profilesPath)) Directory.CreateDirectory(profilesPath);
+if (!Directory.Exists(inspeccionesPath)) Directory.CreateDirectory(inspeccionesPath);
 
 app.Run();

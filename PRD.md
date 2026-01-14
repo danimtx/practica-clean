@@ -57,7 +57,7 @@ Las acciones críticas están protegidas por los siguientes permisos, que se asi
 ### 4.2. Módulo de Gestión de Usuarios (Admins)
 
 *   **RF-07: Listar y Filtrar Usuarios**: `GET /api/usuarios`
-    *   Lista todos los usuarios, con opción de filtrar por cargo. `[Authorize]`
+    *   Lista todos los usuarios, con opción de filtrar por cargo (`?cargo=NombreCargo`). `[Authorize]`
 *   **RF-08: Gestionar Usuario**: `PUT /api/usuarios/gestionar`
     *   Un `Admin` o `SuperAdmin` puede activar usuarios, cambiar `Cargo` y asignar `Permisos`. `[Authorize(Policy = "usuario:gestionar")]`
     *   **Reglas de Negocio**: Un usuario no puede modificarse a sí mismo. Un `Admin` no puede modificar a otro `Admin` o a un `SuperAdmin`.
@@ -74,24 +74,29 @@ Las acciones críticas están protegidas por los siguientes permisos, que se asi
 
 *   **RF-10: Crear Inspección**: `POST /api/inspecciones`
     *   **Seguridad**: `[Authorize(Policy = "inspeccion:crear")]`. Dispara un evento para notificar al técnico asignado.
-*   **RF-11: Ver Inspecciones Propias**: `GET /api/inspecciones/mis-inspecciones`
-    *   Un técnico ve sus inspecciones. El ID se extrae del token. `[Authorize(Roles = "Tecnico")]`.
-*   **RF-12: Gestionar Archivo PDF**:
+    *   **Estado Inicial**: Al crearse, la inspección tiene el estado `"Pendiente"`.
+*   **RF-11: Listar Todas las Inspecciones**: `GET /api/inspecciones`
+    *   Muestra todas las inspecciones del sistema. `[Authorize(Roles = "Admin")]`.
+*   **RF-12: Buscar Inspecciones por Cliente**: `GET /api/inspecciones/buscar`
+    *   Permite filtrar inspecciones por el nombre del cliente (`?nombre=...`). `[Authorize(Roles = "Admin")]`.
+*   **RF-13: Ver Inspecciones Propias**: `GET /api/inspecciones/mis-inspecciones`
+    *   Un técnico ve sus inspecciones asignadas. El ID se extrae del token. `[Authorize(Roles = "Tecnico")]`.
+*   **RF-14: Gestionar Archivo PDF**:
     *   `POST /api/inspecciones/{id}/archivo` - **Seguridad**: `[Authorize(Policy = "inspeccion:archivo:subir")]`
     *   `DELETE /api/inspecciones/{id}/archivo` - **Seguridad**: `[Authorize(Policy = "inspeccion:archivo:borrar")]`
     *   **Reglas**: `.pdf`, max 5MB. Ubicación: `wwwroot/uploads/inspecciones/`.
-*   **RF-13: Descargar Archivo PDF**: `GET /api/inspecciones/{id}/descargar`
+*   **RF-15: Descargar Archivo PDF**: `GET /api/inspecciones/{id}/descargar`
     *   **Seguridad**: `[Authorize]`
-*   **RF-14: Actualizar Estado de Inspección**: `PATCH /api/inspecciones/{id}/estado`
+*   **RF-16: Actualizar Estado de Inspección**: `PATCH /api/inspecciones/{id}/estado`
     *   **Seguridad**: `[Authorize(Policy = "inspeccion:estado")]`
 
 ### 4.5. Módulo de Notificaciones
 
-*   **RF-15: Obtener Notificaciones No Leídas**: `GET /api/notificaciones/no-leidas`
+*   **RF-17: Obtener Notificaciones No Leídas**: `GET /api/notificaciones/no-leidas`
     *   Obtiene la lista de notificaciones pendientes para el usuario autenticado. `[Authorize]`
-*   **RF-16: Marcar Notificaciones como Leídas**: `PATCH /api/notificaciones/marcar-leidas`
+*   **RF-18: Marcar Notificaciones como Leídas**: `PATCH /api/notificaciones/marcar-leidas`
     *   Marca todas las notificaciones no leídas del usuario como leídas. `[Authorize]`
-*   **RF-17: Recibir Notificaciones en Tiempo Real**: `HUB /notificationHub`
+*   **RF-19: Recibir Notificaciones en Tiempo Real**: `HUB /notificationHub`
     *   Endpoint para la conexión persistente con **SignalR**.
 
 ---

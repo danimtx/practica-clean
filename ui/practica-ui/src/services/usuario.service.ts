@@ -75,17 +75,17 @@ export const uploadProfilePhoto = async (formData: FormData) => {
 /**
  * Obtiene la lista de todos los usuarios.
  */
-export const getUsers = async (cargo?: string): Promise<Usuario[]> => {
-    const response = await api.get('/usuarios', { params: { cargo } });
-    return response.data;
+export const getCargos = async (): Promise<Cargo[]> => {
+  // Asegúrate de tener el CargosController en el backend
+  const response = await api.get('/cargos'); 
+  return response.data;
 };
 
-/**
- * Obtiene la lista de todos los cargos.
- */
-export const getCargos = async (): Promise<Cargo[]> => {
-    const response = await api.get('/cargos');
-    return response.data;
+// 2. Obtener Usuarios (Con filtro opcional)
+export const getUsers = async (cargo?: string): Promise<Usuario[]> => {
+  // Axios eliminará "cargo" de la URL si es undefined
+  const response = await api.get('/usuarios', { params: { cargo } });
+  return response.data;
 };
 
 /**
@@ -95,3 +95,5 @@ export const manageUser = async (payload: ManageUserPayload): Promise<Usuario> =
     const response = await api.put(`/usuarios/gestionar`, payload);
     return response.data;
 };
+
+

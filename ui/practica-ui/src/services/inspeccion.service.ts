@@ -70,6 +70,14 @@ export const uploadInspeccionFile = async (id: string, formData: FormData): Prom
  * Actualiza el estado de una inspección.
  */
 export const updateInspeccionEstado = async (id: string, estado: string): Promise<Inspeccion> => {
-    const response = await api.patch(`/inspecciones/${id}/estado`, { estado });
+    const response = await api.patch(`/inspecciones/${id}/estado`, { nuevoEstado: estado });
+    return response.data;
+};
+
+/**
+ * Obtiene todas las inspecciones (para administradores).
+ */
+export const getAllInspecciones = async (): Promise<Inspeccion[]> => {
+    const response = await api.get('/inspecciones');
     return response.data;
 };

@@ -18,10 +18,13 @@ namespace Aplication.DTOs
     {
         public Guid Id { get; set; }
         public string NombreCliente { get; set; } = string.Empty;
+        public string Direccion { get; set; } = string.Empty;
+        public DateTime FechaRegistro { get; set; }
         public string DetallesTecnicos { get; set; } = string.Empty;
+        public string Observaciones { get; set; } = string.Empty;
         public string Estado { get; set; } = string.Empty;
-        public string NombreResponsable { get; set; } = string.Empty;
         public string? RutaArchivoPdf { get; set; }
+        public UsuarioDTO? Tecnico { get; set; }
     }
 
     public record InspeccionEstadoDTO(string NuevoEstado);

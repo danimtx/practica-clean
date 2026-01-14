@@ -9,15 +9,15 @@ namespace Domain.Entities
     public class Inspeccion
     {
         public Guid Id { get; set; }
-        public string NombreCliente { get; set; }
-        public string Direccion { get; set; }
+        public string NombreCliente { get; set; } = string.Empty;
+        public string Direccion { get; set; } = string.Empty;
         public DateTime FechaRegistro { get; set; } = DateTime.Now;
 
-        public string DetallesTecnicos { get; set; }
-        public string Observaciones { get; set; }
+        public string DetallesTecnicos { get; set; } = string.Empty;
+        public string Observaciones { get; set; } = string.Empty;
 
         public string? RutaArchivoPdf { get; set; }
-        public string Estado { get; set; }
+        public string Estado { get; set; } = string.Empty;
 
         public Guid? UsuarioId { get; set; }
         public Usuario? Tecnico { get; set; }

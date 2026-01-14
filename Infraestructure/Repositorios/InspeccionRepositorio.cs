@@ -41,7 +41,9 @@ namespace Infraestructure.Repositorios
 
         public async Task<IEnumerable<Inspeccion>> ObtenerTodasAsync()
         {
-            return await _context.Inspecciones.ToListAsync();
+            return await _context.Inspecciones
+                .Include(i => i.Tecnico)
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<Inspeccion>> BuscarPorClienteAsync(string nombreCliente)
@@ -75,6 +77,7 @@ namespace Infraestructure.Repositorios
         public async Task<IEnumerable<Inspeccion>> ObtenerPorTecnicoAsync(Guid tecnicoId)
         {
             return await _context.Inspecciones
+                .Include(i => i.Tecnico) // Add this line to include the Technician
                 .Where(i => i.UsuarioId == tecnicoId)
                 .ToListAsync();
         }

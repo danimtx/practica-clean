@@ -16,7 +16,7 @@ namespace Domain.Entities
         public Usuario Usuario { get; set; }
 
         [Required]
-        public string Mensaje { get; set; }
+        public string Mensaje { get; set; } = string.Empty;
 
         public bool Leido { get; set; } = false;
 

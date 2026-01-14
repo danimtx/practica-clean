@@ -17,13 +17,13 @@ namespace Aplication.Mappings
             CreateMap<UsuarioRegistroDTO, Usuario>();
 
             CreateMap<Usuario, UsuarioDTO>()
-                .ForMember(dest => dest.Cargo, opt => opt.MapFrom(src => src.Cargo.Nombre));
+                .ForMember(dest => dest.Cargo, opt => opt.MapFrom(src => src.Cargo.Nombre))
+                .ForMember(dest => dest.EstaActivo, opt => opt.MapFrom(src => src.EstaActivo)); // Add this line
 
             CreateMap<CrearInspeccionDTO, Inspeccion>()
                 .ForMember(dest => dest.Estado, opt => opt.MapFrom(src => "Pendiente"));
-            CreateMap<Inspeccion, InspeccionDetalleDTO>()
-                .ForMember(dest => dest.NombreResponsable,
-                    opt => opt.MapFrom(src => src.Tecnico != null ? src.Tecnico.Nombre : "Sin asignar"));
+
+            CreateMap<Inspeccion, InspeccionDetalleDTO>();
         }
 
     }
