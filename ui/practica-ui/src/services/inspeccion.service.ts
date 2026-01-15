@@ -81,3 +81,5 @@ export const getAllInspecciones = async (): Promise<Inspeccion[]> => {
     const response = await api.get('/inspecciones');
     return response.data;
 };
+
+

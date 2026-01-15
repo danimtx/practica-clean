@@ -37,20 +37,32 @@ const DetalleInspeccionPage: React.FC = () => {
     };
     
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0] && id) {
-            const file = e.target.files[0];
-            const formData = new FormData();
-            formData.append('file', file);
-            toast.info('Subiendo archivo...');
-            try {
-                const updated = await uploadInspeccionFile(id, formData);
-                setInspeccion(updated);
-                toast.success('Archivo subido correctamente.');
-            } catch (error) {
-                toast.error('No se pudo subir el archivo.');
-            }
+    // Aseguramos que exista inspección antes de intentar actualizarla
+    if (e.target.files && e.target.files[0] && id && inspeccion) {
+        const file = e.target.files[0];
+        const formData = new FormData();
+        
+       
+        formData.append('archivo', file); 
+
+        toast.info('Subiendo archivo...');
+        try {
+            
+            const response: any = await uploadInspeccionFile(id, formData);
+            
+            
+            setInspeccion({
+                ...inspeccion,
+                rutaArchivoPdf: response.rutaArchivo
+            });
+            
+            toast.success('Archivo subido correctamente.');
+        } catch (error) {
+            console.error(error);
+            toast.error('No se pudo subir el archivo.');
         }
-    };
+    }
+};
 
     if (isLoading) return <div>Cargando inspección...</div>;
     if (!inspeccion) return <div>Inspección no encontrada.</div>;
