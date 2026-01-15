@@ -91,10 +91,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization(options =>
 {
-    // Política para SuperAdmin
-    options.AddPolicy("SuperAdminPolicy", policy => policy.RequireRole("SuperAdmin"));
+    // 1. Definir política de SuperAdmin
+    options.AddPolicy("SuperAdminPolicy", policy =>
+        policy.RequireAssertion(context =>
+            context.User.HasClaim(c => c.Type == "cargo" && c.Value == "SuperAdmin")
+        ));
 
-    // Lista de permisos exactos que usa el sistema
     var permissions = new[] {
         "inspeccion:crear",
         "inspeccion:editar",
@@ -105,13 +107,33 @@ builder.Services.AddAuthorization(options =>
         "cargo:gestionar"
     };
 
+    // 2. Definir políticas por permiso individual
     foreach (var permission in permissions)
     {
         options.AddPolicy(permission, policy =>
             policy.RequireAssertion(context =>
-                // CORRECCIÓN: Buscamos "permiso" (singular) y valor exacto
-                context.User.HasClaim(c => c.Type == "permiso" && c.Value == permission)
-            ));
+            {
+                // Opción A: Es SuperAdmin (Pase directo)
+                if (context.User.HasClaim(c => c.Type == "cargo" && c.Value == "SuperAdmin"))
+                {
+                    return true;
+                }
+
+                // Opción B: Tiene el permiso en singular ("permiso": "inspeccion:crear") -> ESTÁNDAR
+                if (context.User.HasClaim(c => c.Type == "permiso" && c.Value == permission))
+                {
+                    return true;
+                }
+
+                // Opción C: Tiene permisos en plural separados por coma ("permisos": "a,b,c") -> LEGACY
+                var permisosClaim = context.User.FindFirst("permisos");
+                if (permisosClaim != null && permisosClaim.Value.Split(',').Contains(permission))
+                {
+                    return true;
+                }
+
+                return false;
+            }));
     }
 });
 

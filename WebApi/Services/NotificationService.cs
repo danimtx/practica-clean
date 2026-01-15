@@ -17,7 +17,9 @@ namespace WebApi.Services
 
         public async Task EnviarNotificacion(Notificacion notificacion)
         {
-            await _hubContext.Clients.User(notificacion.UsuarioId.ToString())
+            var userIdString = notificacion.UsuarioId.ToString().ToLower();
+
+            await _hubContext.Clients.User(userIdString)
                 .SendAsync("RecibirNotificacion", notificacion);
         }
     }
